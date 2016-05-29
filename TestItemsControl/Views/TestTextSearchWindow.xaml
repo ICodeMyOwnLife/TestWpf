@@ -1,0 +1,36 @@
+﻿<Window x:Class="TestItemsControl.Views.TestTextSearchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vml="clr-namespace:TestItemsControl.ViewModels"
+        mc:Ignorable="d"
+        Title="TestTextSearchWindow" Height="300" Width="300">
+
+    <Window.DataContext>
+        <vml:TestTextSearchViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Grid.Row="0" Grid.Column="0"
+                 Text="{Binding PersonNameFilter, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding PersonAgeFilter, UpdateSourceTrigger=PropertyChanged}" />
+
+        <DataGrid x:Name="lstPeople" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                  IsTextSearchCaseSensitive="False" IsTextSearchEnabled="True"
+                  DisplayMemberPath="Name" ItemsSource="{Binding PeopleView}"
+                  TextSearch.TextPath="Name" />
+    </Grid>
+</Window>
