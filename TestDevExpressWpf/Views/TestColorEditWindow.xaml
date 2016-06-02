@@ -1,0 +1,48 @@
+﻿<mah:MetroWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    x:Class="TestDevExpressWpf.Views.TestColorEditWindow"
+    mc:Ignorable="d"
+    Title="Test ColorEdit" SizeToContent="WidthAndHeight" Style="{StaticResource MetroWindowStyle}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <dxe:ColorEdit x:Name="cleMain" Grid.Column="0" Width="Auto" Height="Auto" />
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <dxe:PopupColorEdit Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                VerticalAlignment="Top" Color="{Binding ElementName=cleMain, Path=Color, Mode=TwoWay}"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Value:" Style="{StaticResource TextBlockStyle.Label}" />
+
+            <TextBox Grid.Row="1" Grid.Column="1" TextAlignment="Center"
+                     Text="{Binding ElementName=cleMain, Path=Color}" />
+
+            <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                       Height="32" Width="160" Style="{StaticResource RectangleStyle}">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{Binding ElementName=cleMain, Path=Color}" />
+                </Rectangle.Fill>
+            </Rectangle>
+        </Grid>
+    </Grid>
+</mah:MetroWindow>
