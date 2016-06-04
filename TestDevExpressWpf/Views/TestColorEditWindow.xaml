@@ -5,23 +5,40 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
     x:Class="TestDevExpressWpf.Views.TestColorEditWindow"
     mc:Ignorable="d"
-    Title="Test ColorEdit" SizeToContent="WidthAndHeight" Style="{StaticResource MetroWindowStyle}">
+    Title="Test ColorEdit" SizeToContent="WidthAndHeight"
+    Style="{StaticResource MetroWindowStyle}" WindowStartupLocation="CenterScreen">
 
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="Rectangle" BasedOn="{StaticResource RectangleStyle}">
+                <Setter Property="Stroke" Value="Black" />
+                <Setter Property="StrokeThickness" Value="2" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="Width" Value="160" />
+            </Style>
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <dxe:ColorEdit x:Name="cleMain" Grid.Column="0" Width="Auto" Height="Auto" />
+        <dxe:ColorEdit x:Name="cleMain" Grid.Row="0" Grid.Column="0" Width="Auto" Height="Auto"
+                       Color="Sienna" />
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Row="0" Grid.Column="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -30,19 +47,60 @@
             </Grid.ColumnDefinitions>
 
             <dxe:PopupColorEdit Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                                VerticalAlignment="Top" Color="{Binding ElementName=cleMain, Path=Color, Mode=TwoWay}"/>
+                                VerticalAlignment="Top" Color="{Binding ElementName=cleMain, Path=Color, Mode=TwoWay}" />
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Value:" Style="{StaticResource TextBlockStyle.Label}" />
 
             <TextBox Grid.Row="1" Grid.Column="1" TextAlignment="Center"
                      Text="{Binding ElementName=cleMain, Path=Color}" />
 
-            <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                       Height="32" Width="160" Style="{StaticResource RectangleStyle}">
+            <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                 <Rectangle.Fill>
                     <SolidColorBrush Color="{Binding ElementName=cleMain, Path=Color}" />
                 </Rectangle.Fill>
             </Rectangle>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+        <dxprg:BrushEdit x:Name="breMain" Grid.Row="0" Width="Auto" Height="Auto"
+                         EditValueType="LinearGradientBrush">
+            <dxprg:BrushEdit.EditValue>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="MediumSeaGreen" Offset="0" />
+                    <GradientStop Color="GreenYellow" Offset="1" />
+                </LinearGradientBrush>
+            </dxprg:BrushEdit.EditValue>
+        </dxprg:BrushEdit>
+
+        <dxe:PopupBrushEditStyleSettings Grid.Row="1" Width="Auto" Height="Auto"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <dxprg:PopupBrushEdit Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                  EditValue="{Binding ElementName=breMain, Path=EditValue}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Value" />
+
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ElementName=breMain, Path=EditValue}" />
+
+            <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                       Fill="{Binding ElementName=breMain, Path=EditValue}" />
         </Grid>
     </Grid>
 </mah:MetroWindow>

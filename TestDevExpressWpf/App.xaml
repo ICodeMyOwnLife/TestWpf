@@ -17,6 +17,10 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
 
+            <Style TargetType="dxprg:BrushEdit" BasedOn="{StaticResource InputStyle}" />
+
+            <Style TargetType="dxprg:PopupBrushEdit" BasedOn="{StaticResource InputStyle}" />
+
             <Style TargetType="dxe:ColorEdit" BasedOn="{StaticResource InputStyle}" />
 
             <Style TargetType="dxe:PopupColorEdit" BasedOn="{StaticResource InputStyle}" />

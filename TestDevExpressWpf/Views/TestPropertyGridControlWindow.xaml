@@ -8,7 +8,8 @@
     xmlns:vmd="clr-namespace:TestDevExpressWpf.ViewModels"
     x:Class="TestDevExpressWpf.Views.TestPropertyGridControlWindow"
     mc:Ignorable="d"
-    Title="TestPropertyGridControlWindow" SizeToContent="WidthAndHeight" Style="{StaticResource MetroWindowStyle}">
+    Title="TestPropertyGridControlWindow" Height="768" SizeToContent="Width" Style="{StaticResource MetroWindowStyle}"
+    WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <vmd:TestPropertyGridControlViewModel x:Key="ViewModel" />
@@ -23,6 +24,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -30,9 +32,13 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <dxprg:PropertyGridControl Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Height="Auto" Width="Auto"
+        <dxprg:PropertyGridControl Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Height="Auto" Width="Auto"
                                    MinHeight="360" MinWidth="320"
                                    SelectedObject="{Binding}" />
+
+        <dxprg:PropertyGridControl Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Height="Auto" Width="Auto"
+                                   MinHeight="360" MinWidth="320"
+                                   SelectedObject="{Binding ElementName=ellipse}" />
 
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}" />
 

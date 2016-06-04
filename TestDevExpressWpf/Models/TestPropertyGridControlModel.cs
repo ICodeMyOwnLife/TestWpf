@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using System.Windows.Media;
 using CB.Model.Common;
 
 
@@ -8,7 +8,8 @@ namespace TestDevExpressWpf.Models
     public class TestPropertyGridControlModel: BindableObject
     {
         #region Fields
-        private Color _color = Color.DarkOrchid;private DateTime _date = DateTime.Now;
+        private Color _color = Colors.DarkOrchid;
+        private DateTime _date = DateTime.Now;
         private Brush _fill = Brushes.BlueViolet;
         private double _height = 120;
         private string _name = "Special Ellipse";
