@@ -1,0 +1,103 @@
+﻿<mah:MetroWindow x:Class="TestWpfValidation.Views.TestValidationAttributeWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:vmdl="clr-namespace:TestWpfValidation.ViewModels"
+                 xmlns:mdl="clr-namespace:TestWpfValidation.Models"
+                 mc:Ignorable="d"
+                 Title="TestValidationAttributeWindow" Height="600" Width="800"
+                 Style="{StaticResource MetroWindowStyle}"
+                 WindowStartupLocation="CenterScreen"
+                 d:DataContext="{d:DesignInstance vmdl:TestValidationAttributeDesignViewModel}">
+
+    <Window.Resources>
+        <vmdl:TestValidationAttributeViewModel x:Key="MainViewModel" />
+
+        <DataTemplate x:Key="UserNameColumnTemplate" DataType="mdl:Person">
+            <TextBlock Text="{Binding UserName}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="UserNameEditColumnTemplate" DataType="mdl:Person">
+            <TextBox Text="{Binding UserName, ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="AgeColumnTemplate" DataType="mdl:Person">
+            <TextBlock Text="{Binding Age}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="AgeEditColumnTemplate" DataType="mdl:Person">
+            <TextBox
+                Text="{Binding Age, ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
+        </DataTemplate>
+
+        <Style x:Key="ValidatableTextBox" TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBox Text="{Binding (Validation.Errors)[0].ErrorContent}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <StaticResource ResourceKey="MainViewModel" />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Style="{StaticResource AppThemeMenuItemStyle}" />
+            <MenuItem Style="{StaticResource AccentMenuItemStyle}" />
+        </Menu>
+
+        <Grid Grid.Row="1">
+            <DataGrid AutoGenerateColumns="False"
+                      ItemsSource="{Binding PeopleView}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="User Name"
+                                            CellTemplate="{StaticResource UserNameColumnTemplate}"
+                                            CellEditingTemplate="{StaticResource UserNameEditColumnTemplate}" />
+
+                    <DataGridTemplateColumn Header="Age"
+                                            CellTemplate="{StaticResource AgeColumnTemplate}"
+                                            CellEditingTemplate="{StaticResource AgeEditColumnTemplate}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <Grid Grid.Row="2" DataContext="{Binding SelectedPerson}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="User Name:" />
+            <TextBox x:Name="txtUserName" Grid.Row="0" Grid.Column="1"
+                     Validation.Error="Validation_OnError"
+                     Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}" />
+            <!--<TextBlock Grid.Row="0" Grid.Column="2"
+                       Text="{Binding ElementName=txtUserName, Path=(Validation.Errors)[0].ErrorContent}" />-->
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Age:" />
+            <TextBox x:Name="txtAge" Grid.Row="1" Grid.Column="1"
+                     Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
+            <!--<TextBlock Grid.Row="1" Grid.Column="2"
+                       Text="{Binding ElementName=txtAge, Path=(Validation.Errors)[0].ErrorContent}" />-->
+        </Grid>
+    </Grid>
+</mah:MetroWindow>
