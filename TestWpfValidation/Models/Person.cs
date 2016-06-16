@@ -1,15 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using CB.Model.Common;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using CB.Model.Prism;
 
 
 namespace TestWpfValidation.Models
 {
-    public class Person: BindableObject
+    public class Person: PrismModelBase
     {
         #region Fields
         private int _age;
-        private string _userName;
+        private string _name;
+        private int _yearOfBirth;
         #endregion
 
 
@@ -19,16 +20,53 @@ namespace TestWpfValidation.Models
         public int Age
         {
             get { return _age; }
-            set { SetProperty(ref _age, value); }
+            set
+            {
+                if (SetProperty(ref _age, value))
+                {
+                    CoerceBirthYear();
+                }
+            }
         }
 
-        [Required(ErrorMessage = "User name must be provided.", AllowEmptyStrings = false)]
-        [StringLength(12, MinimumLength = 6, ErrorMessage = "User name must be between 6 and 12 characters-length.")]
-        public string UserName
+        [Required(ErrorMessage = "Name must be provided.", AllowEmptyStrings = false)]
+        [StringLength(12, MinimumLength = 6, ErrorMessage = "Name must be between 6 and 12 characters-length.")]
+        public string Name
         {
-            get { return _userName; }
-            set { SetProperty(ref _userName, value); }
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
+        }
+
+        [Required(ErrorMessage = "Year of birth must be provided")]
+        public int YearOfBirth
+        {
+            get { return _yearOfBirth; }
+            set
+            {
+                if (SetProperty(ref _yearOfBirth, value))
+                {
+                    if (YearOfBirth > DateTime.Today.Year)
+                        SetError("Year of birth must be not larger than current year.");
+                    CoerceBirthYear();
+                }
+            }
+        }
+        #endregion
+
+
+        #region Implementation
+        private void CoerceBirthYear()
+        {
+            if (DateTime.Now.Year - YearOfBirth != Age)
+            {
+                var error = "Age doesn't suit year of birth";
+                SetPropertyErrors(nameof(Age), error);
+                SetPropertyErrors(nameof(YearOfBirth), error);
+            }
         }
         #endregion
     }
 }
+
+
+// TODO: test Validation, DataObjectProvider, CompositeCollection

@@ -16,11 +16,20 @@
         <vmdl:TestValidationAttributeViewModel x:Key="MainViewModel" />
 
         <DataTemplate x:Key="UserNameColumnTemplate" DataType="mdl:Person">
-            <TextBlock Text="{Binding UserName}" />
+            <TextBlock Text="{Binding Name}" />
         </DataTemplate>
 
         <DataTemplate x:Key="UserNameEditColumnTemplate" DataType="mdl:Person">
-            <TextBox Text="{Binding UserName, ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True}" />
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="YearColumnTemplate" DataType="mdl:Person">
+            <TextBlock Text="{Binding YearOfBirth}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="YearEditColumnTemplate" DataType="mdl:Person">
+            <TextBox
+                Text="{Binding YearOfBirth, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
         </DataTemplate>
 
         <DataTemplate x:Key="AgeColumnTemplate" DataType="mdl:Person">
@@ -29,18 +38,8 @@
 
         <DataTemplate x:Key="AgeEditColumnTemplate" DataType="mdl:Person">
             <TextBox
-                Text="{Binding Age, ValidatesOnDataErrors=True, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
+                Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
         </DataTemplate>
-
-        <Style x:Key="ValidatableTextBox" TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
-            <Setter Property="Validation.ErrorTemplate">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <TextBox Text="{Binding (Validation.Errors)[0].ErrorContent}" />
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
 
     <Window.DataContext>
@@ -67,6 +66,10 @@
                                             CellTemplate="{StaticResource UserNameColumnTemplate}"
                                             CellEditingTemplate="{StaticResource UserNameEditColumnTemplate}" />
 
+                    <DataGridTemplateColumn Header="Birth Year"
+                                            CellTemplate="{StaticResource YearColumnTemplate}"
+                                            CellEditingTemplate="{StaticResource YearEditColumnTemplate}" />
+
                     <DataGridTemplateColumn Header="Age"
                                             CellTemplate="{StaticResource AgeColumnTemplate}"
                                             CellEditingTemplate="{StaticResource AgeEditColumnTemplate}" />
@@ -78,26 +81,28 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="260" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="User Name:" />
             <TextBox x:Name="txtUserName" Grid.Row="0" Grid.Column="1"
                      Validation.Error="Validation_OnError"
-                     Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}" />
-            <!--<TextBlock Grid.Row="0" Grid.Column="2"
-                       Text="{Binding ElementName=txtUserName, Path=(Validation.Errors)[0].ErrorContent}" />-->
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}" />
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Age:" />
-            <TextBox x:Name="txtAge" Grid.Row="1" Grid.Column="1"
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Birth year:" />
+            <TextBox x:Name="txtYear" Grid.Row="1" Grid.Column="1"
+                     Text="{Binding YearOfBirth, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Age:" />
+            <TextBox x:Name="txtAge" Grid.Row="2" Grid.Column="1"
                      Text="{Binding Age, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True}" />
-            <!--<TextBlock Grid.Row="1" Grid.Column="2"
-                       Text="{Binding ElementName=txtAge, Path=(Validation.Errors)[0].ErrorContent}" />-->
+
         </Grid>
     </Grid>
 </mah:MetroWindow>
