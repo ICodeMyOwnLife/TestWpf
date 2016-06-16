@@ -1,0 +1,45 @@
+﻿<mah:MetroWindow x:Class="TestBinding.Views.TestPriorityBindingWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:vmd="clr-namespace:TestBinding.ViewModels"
+                 mc:Ignorable="d"
+                 Title="Test Priority Binding" SizeToContent="Height" Width="480"
+                 Style="{StaticResource MetroWindowStyle}" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <vmd:TestPriorityBindingViewModel x:Key="MainViewModel" />
+    </Window.Resources>
+
+    <Window.DataContext>
+        <StaticResource ResourceKey="MainViewModel" />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0">
+            <MenuItem Style="{StaticResource AppThemeMenuItemStyle}" />
+            <MenuItem Style="{StaticResource AccentMenuItemStyle}" />
+        </Menu>
+
+        <TextBlock Grid.Row="1" Margin="{StaticResource NormalMargin}"
+                   FontSize="32" HorizontalAlignment="Center">
+            <TextBlock.Text>
+                <PriorityBinding>
+                    <Binding Path="SlowTask" IsAsync="True" />
+                    <Binding Path="MediumTask" IsAsync="True" />
+                    <Binding Path="FastTast" IsAsync="True" />
+                </PriorityBinding>
+            </TextBlock.Text>
+        </TextBlock>
+
+        <StatusBar Grid.Row="2" />
+    </Grid>
+</mah:MetroWindow>

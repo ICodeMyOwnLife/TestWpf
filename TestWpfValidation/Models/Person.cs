@@ -17,16 +17,11 @@ namespace TestWpfValidation.Models
         #region  Properties & Indexers
         [Required(ErrorMessage = "Age must be provided")]
         [Range(0, 100, ErrorMessage = "Age must be between 0 and 100.")]
+        [CustomValidation(typeof(Person), nameof(ValidatePerson))]
         public int Age
         {
             get { return _age; }
-            set
-            {
-                if (SetProperty(ref _age, value))
-                {
-                    CoerceBirthYear();
-                }
-            }
+            set { SetProperty(ref _age, value); }
         }
 
         [Required(ErrorMessage = "Name must be provided.", AllowEmptyStrings = false)]
@@ -38,6 +33,7 @@ namespace TestWpfValidation.Models
         }
 
         [Required(ErrorMessage = "Year of birth must be provided")]
+        [CustomValidation(typeof(Person), nameof(ValidatePerson))]
         public int YearOfBirth
         {
             get { return _yearOfBirth; }
@@ -47,7 +43,6 @@ namespace TestWpfValidation.Models
                 {
                     if (YearOfBirth > DateTime.Today.Year)
                         SetError("Year of birth must be not larger than current year.");
-                    CoerceBirthYear();
                 }
             }
         }
@@ -64,9 +59,12 @@ namespace TestWpfValidation.Models
                 SetPropertyErrors(nameof(YearOfBirth), error);
             }
         }
+
+        public static ValidationResult ValidatePerson(Person p, ValidationContext context)
+            => DateTime.Now.Year - p.YearOfBirth != p.Age ? new ValidationResult("Age doesn't suit year of birth", new[] { nameof(Age), nameof(YearOfBirth) }) : ValidationResult.Success;
         #endregion
     }
 }
 
 
-// TODO: test Validation, DataObjectProvider, CompositeCollection
+// TODO: test Multi-Validation, CompositeCollection, Multi-Binding
