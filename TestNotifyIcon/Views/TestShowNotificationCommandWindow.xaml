@@ -1,0 +1,69 @@
+﻿<mah:MetroWindow x:Class="TestNotifyIcon.Views.TestShowNotificationCommandWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:vmd="clr-namespace:TestNotifyIcon.ViewModels"
+                 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                 xmlns:prm="http://prismlibrary.com/"
+                 xmlns:xaml="http://wpf.cb.com/xaml"
+                 mc:Ignorable="d"
+                 Title="TestShowNotificationCommandWindow" Height="600" Width="800"
+                 Style="{StaticResource MetroWindowStyle}"
+                 WindowStartupLocation="CenterScreen" Visibility="Hidden" Icon="../connections2.ico"
+                 xaml:WindowServices.DisposeDataContextWhenClosed="True"
+                 xaml:WindowServices.CloseToHide="True">
+
+    <Window.DataContext>
+        <vmd:TestShowNotificationCommandViewModel />
+    </Window.DataContext>
+
+    <i:Interaction.Triggers>
+        <prm:InteractionRequestTrigger SourceObject="{Binding NotifyRequestProvider.Request}">
+            <xaml:ShowNotificationAction TargetName="notifyIcon" />
+        </prm:InteractionRequestTrigger>
+
+        <xaml:WindowRequestTrigger SourceObject="{Binding WindowRequestProvider.Request}" />
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <xaml:NotifyIcon x:Name="notifyIcon" ToolTipText="Test ShowNotificationCommand"
+                         IconSource="../connections2.ico" CloseWhenParentWindowClosed="True">
+            <xaml:NotifyIcon.ContextMenu>
+                <ContextMenu>
+                    <DockPanel>
+                        <TextBlock Text="Interval" />
+                        <TextBox Text="{Binding Seconds, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="{StaticResource NormalMargin.Left}" BorderThickness="0" />
+                    </DockPanel>
+                    <Separator />
+                    <MenuItem Header="Start Timer" Command="{Binding StartTimerCommand}" />
+                    <MenuItem Header="Stop Timer" Command="{Binding StopTimerCommand}" />
+                    <Separator />
+                    <MenuItem Header="Show Window" Command="{Binding WindowRequestProvider.RaiseCommand}"
+                              CommandParameter="Show" />
+                    <MenuItem Header="Hide Window" Command="{Binding WindowRequestProvider.RaiseCommand}"
+                              CommandParameter="Hide" />
+                    <MenuItem Header="Exit" Command="{Binding WindowRequestProvider.RaiseCommand}"
+                              CommandParameter="Close" />
+                </ContextMenu>
+            </xaml:NotifyIcon.ContextMenu>
+        </xaml:NotifyIcon>
+
+        <Menu Grid.Row="0">
+            <MenuItem Style="{StaticResource AppThemeMenuItemStyle}" />
+            <MenuItem Style="{StaticResource AccentMenuItemStyle}" />
+        </Menu>
+
+        <Grid Grid.Row="1" />
+
+        <StatusBar Grid.Row="2" />
+    </Grid>
+</mah:MetroWindow>

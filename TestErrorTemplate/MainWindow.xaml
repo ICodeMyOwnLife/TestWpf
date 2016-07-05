@@ -1,0 +1,48 @@
+﻿<Window x:Class="TestErrorTemplate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestErrorTemplate"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+
+    <FrameworkElement.Resources>
+        
+        
+        <DataTemplate x:Key="NumberColumn" DataType="local:Model">
+            <TextBlock Text="{Binding Number}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="NumberEditingColumn" DataType="local:Model">
+            <TextBox
+                Text="{Binding Number, ValidatesOnExceptions=True, ValidatesOnNotifyDataErrors=True, NotifyOnValidationError=True}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="TextColumn" DataType="local:Model">
+            <TextBlock Text="{Binding Text}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="TextEditingColumn" DataType="local:Model">
+            <TextBox
+                Text="{Binding Text, ValidatesOnExceptions=True, ValidatesOnNotifyDataErrors=True, NotifyOnValidationError=True}" />
+        </DataTemplate>
+    </FrameworkElement.Resources>
+
+    <FrameworkElement.DataContext>
+        <local:ViewModel />
+    </FrameworkElement.DataContext>
+
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Models}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Text"
+                                        CellTemplate="{StaticResource TextColumn}"
+                                        CellEditingTemplate="{StaticResource TextEditingColumn}" />
+                <DataGridTemplateColumn Header="Number"
+                                        CellTemplate="{StaticResource NumberColumn}"
+                                        CellEditingTemplate="{StaticResource NumberEditingColumn}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
